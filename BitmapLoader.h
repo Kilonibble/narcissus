@@ -1,5 +1,6 @@
 #pragma once
 #include "imageloader.h"
+#include <vector>
 
 // Header field type for a bitmap
 #define BITMAP_TYPE_BYTE1 0x42
@@ -35,6 +36,14 @@ typedef struct
     unsigned int   importantColours;   /* Number of important colours */
 } BmpInfoHeader;
 
+typedef struct 
+{
+	char r, g, b;
+} Pixel; 
+
+typedef std::vector<Pixel> pixel_row; 
+typedef std::vector<std::vector<Pixel>> pixel_map;
+
 class BitmapLoader : public ImageLoader
 {
 public:
@@ -47,6 +56,7 @@ public:
 private:
 	BmpFileHeader* m_fileHeader; 
 	BmpInfoHeader* m_infoHeader;
+	pixel_map m_pixelMap;
 
 	// Helper functions
 	int fillHeader(std::ifstream& refInputStream);

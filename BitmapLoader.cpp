@@ -64,8 +64,29 @@ int BitmapLoader::loadImage(std::string filename)
 	}
 
 	dumpHeaderInfo();
-	/* Read in the pixels */
 
+	/* Read in the pixels */
+	for(int row = 0; row < m_infoHeader->height; row++)
+	{
+		/* Loop through each row */
+		pixel_row dat;
+
+		for (int col = 0; col < m_infoHeader->width; col++)
+		{
+			/* Loop through each column*/
+			Pixel pixel;
+			fileStream.read(&pixel.r, 1);
+			fileStream.read(&pixel.g, 1);
+			fileStream.read(&pixel.b, 1);
+			dat.push_back(pixel);
+		}
+
+		m_pixelMap.push_back(dat);
+	}
+
+	if(m_pixelMap.size() == 0) std::cerr << "Could not read any pixel data." << std::endl;
+
+	fileStream.close();
 }
 
 /**
